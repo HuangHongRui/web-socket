@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { SYSMESSAGE_PLACEHOLDER, TLAKMESSAGE_PLACEHOLDER } from "./else";
 import socket from "./socket";
 
 const App = () => {
   const [sysMessage, setSysMessage] = useState("");
   const [talkMessage, setTalkMessage] = useState("");
-  const [message, setMessage] = useState("");
   const inputRef = useRef<any>();
   const wsRef = useRef<any>();
 
@@ -39,23 +39,24 @@ const App = () => {
     // 2.主动给WebSocket发送信息
     console.log("主动给WebSocket发送信息");
     wsRef.current.send(inputRef.current.value);
+    inputRef.current.value = "";
   }
 
   return (
-    <div className="p-20 h-screen flex flex-col">
+    <div className="p-20 h-screen flex flex-col font-serif">
       <h1 className="text-center text-2xl mb-4">Hello Socket</h1>
       <div className="flex">
-        <input className="flex-1 px-10 mr-2 h-10 bg-red-50" ref={inputRef} />
+        <input className="flex-1 px-10 mr-2 h-10 bg-red-50" placeholder="Say Something..." ref={inputRef} />
         <button
           className="w-40 h-10 rounded-md bg-sky-500 hover:bg-sky-700 ..."
           onClick={fnSend}
         >
-          发送
+          SEND
         </button>
       </div>
       <div className="flex flex-1 mt-4 w-full">
-        <textarea className="flex-1 p-10 mt-4 bg-teal-100" value={talkMessage} />
-        <textarea className="w-3/12 p-10 mt-4 bg-indigo-300" value={sysMessage} />
+        <textarea placeholder={TLAKMESSAGE_PLACEHOLDER} readOnly className="flex-1 p-10 mt-4 bg-teal-100" value={talkMessage} />
+        <textarea placeholder={SYSMESSAGE_PLACEHOLDER} readOnly className="w-3/12 p-10 mt-4 bg-indigo-300" value={sysMessage} />
       </div>
     </div>
   );
