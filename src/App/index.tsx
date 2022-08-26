@@ -22,16 +22,16 @@ const App = () => {
     // 3. WebSocket接收Message数据时触发
     wsRef.current.addEventListener("message", (e: Event | any) => {
       console.log("接收Message数据", e);
-      const { type, message } = JSON.parse(e.data);
+      const { type, msg, time } = JSON.parse(e.data);
       switch (type) {
         case 0:
-          setSysMessage((data) => message + "\n" + data);
+          setSysMessage((data) => msg + "\n" + data);
           break;
         case 1:
-          setTalkMessage((data) => message + "\n" + data);
+          setTalkMessage((data) => msg + `（${time}）` + "\n" + data);
           break;
         case 2:
-          setOnlineMessage(message?.join("\n"));
+          setOnlineMessage(msg?.join("\n"));
           break;
       }
     });
@@ -51,7 +51,7 @@ const App = () => {
   };
 
   return (
-    <div className="p-20 h-screen flex flex-col font-serif">
+    <div className="p-20 h-screen flex flex-col font-mono">
       <h1 className="text-center text-2xl mb-4">Hello Socket</h1>
       <div className="flex">
         <input
